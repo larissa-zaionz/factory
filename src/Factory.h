@@ -54,4 +54,10 @@ int contarEsteira(const Esteira& e);
 void mostrarMaquina(const Maquina& m);
 void verPedidos(const Jogo& j);
 
+// Turno
+void receberMateriaPrima(Jogo& j);
+bool alimentarCortadora(Jogo& j);
+bool avancarMaquina(Maquina& m);
+void etapaCortadora(Jogo& j);
+
 #endif

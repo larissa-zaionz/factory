@@ -62,10 +62,12 @@ void mostrarTela(const Jogo& j) {
     mostrarMaquina(j.montadora);
 }
 
-// Executa um turno. Por enquanto so avanca o contador.
+// Executa um turno: entra material, cortadora, avanca o relogio.
 // Parametro: j (alterado). Retorno: nenhum.
 void avancarTurno(Jogo& j) {
-    colocarNaEsteira(j.esteira1, {10, "Chapa"});  // TEMPORARIO: simula a entrada
+    receberMateriaPrima(j);
+    etapaCortadora(j);
+    // TODO: etapaMontadora(j) quando o estoque existir
     j.turno++;
 }
 
@@ -116,4 +118,40 @@ void mostrarMaquina(const Maquina& m) {
 // Parametro: j (so leitura). Retorno: nenhum.
 void verPedidos(const Jogo& j) {
     for (const Pedido& p : j.pedidos) exibirPedido(p);
+}
+
+// Coloca 1 Chapa na esteira 1.
+// TEMPORARIO: depois vai tirar do estoque.
+void receberMateriaPrima(Jogo& j) {
+    colocarNaEsteira(j.esteira1, criarProduto(ID_CHAPA, "Chapa"));
+}
+
+// Se a cortadora esta livre e ha 3 chapas, consome as 3 e comeca a produzir.
+// Parametro: j. Retorno: true se comecou.
+bool alimentarCortadora(Jogo& j) {
+    if (j.cortadora.ocupada || contarEsteira(j.esteira1) < 3) return false;
+    Produto descartado = {0, ""};
+    for (int i = 0; i < 3; i++) retirarDaEsteira(j.esteira1, descartado);
+    j.cortadora.ocupada = true;
+    j.cortadora.progressoAtual = 0;
+    return true;
+}
+
+// Soma 1 turno de trabalho. Parametro: m.
+// Retorno: true se terminou neste turno (a maquina volta a ficar livre).
+bool avancarMaquina(Maquina& m) {
+    if (!m.ocupada) return false;
+    m.progressoAtual++;
+    if (m.progressoAtual < m.tempoNecessario) return false;
+    m.ocupada = false;
+    m.progressoAtual = 0;
+    return true;
+}
+
+// Etapa da cortadora: alimenta, trabalha e, se terminou,
+// coloca uma Engrenagem na esteira 2. Parametro: j .
+void etapaCortadora(Jogo& j) {
+    alimentarCortadora(j);
+    if (avancarMaquina(j.cortadora))
+        colocarNaEsteira(j.esteira2, criarProduto(ID_ENGRENAGEM, "Engrenagem"));
 }
