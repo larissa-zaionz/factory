@@ -7,7 +7,7 @@
 #include "Produto.h"
 #include "Ordenacao.h"
 #include "ArvoreProdutos.h"
-
+#include "ListaProdutos.h"
 // Uma esteira = os dois ponteiros da fila agrupados numa struct.
 struct Esteira {
     NoFila* inicio;
@@ -30,6 +30,7 @@ struct Jogo {
     std::vector<Pedido> pedidos;
     NoHistorico* historico;   // pilha de entregas (desfazer)
     NoArvore* receitas;       // raiz da BST de receitas
+    Lista estoque;            // materia-prima e produtos prontos
     int turno;
     int turnoMaximo;
 };
@@ -69,5 +70,10 @@ void ordenarPedidos(Jogo& j);
 // Receitas
 void carregarReceitas(Jogo& j);
 void mostrarNecessidade(const Jogo& j, int idProduto, int qtd);
+
+// Estoque e montadora
+void carregarEstoque(Jogo& j);
+bool alimentarMontadora(Jogo& j);
+void etapaMontadora(Jogo& j);
 
 #endif

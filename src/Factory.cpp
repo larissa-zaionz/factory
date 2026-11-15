@@ -49,6 +49,7 @@ void iniciarJogo(Jogo& j) {
     j.turnoMaximo = 20;
     j.receitas = nullptr;
     carregarReceitas(j);
+    carregarEstoque(j);
     criarPedidos(j);
 }
 
@@ -62,6 +63,8 @@ void mostrarTela(const Jogo& j) {
     std::cout << "Esteira 2: ";
     mostrarEsteira(j.esteira2);
     mostrarMaquina(j.montadora);
+    std::cout << "Estoque:\n";
+    mostrarLista(j.estoque);
 }
 
 // Executa um turno: entra material, cortadora, avanca o relogio.
@@ -69,7 +72,7 @@ void mostrarTela(const Jogo& j) {
 void avancarTurno(Jogo& j) {
     receberMateriaPrima(j);
     etapaCortadora(j);
-    // TODO: etapaMontadora(j) quando o estoque existir
+    etapaMontadora(j);
     j.turno++;
 }
 
@@ -84,6 +87,7 @@ void liberarMemoria(Jogo& j) {
     liberarEsteira(j.esteira2);
     liberarPilha(j.historico);
     liberarArvore(j.receitas);
+    liberarLista(j.estoque);
 }
 
 // Cria uma maquina ociosa.
@@ -128,11 +132,14 @@ void verPedidos(const Jogo& j) {
     }
 }
 
-// Coloca 1 Chapa na esteira 1.
-// TEMPORARIO: depois vai tirar do estoque.
+// Move ate 2 Chapas do estoque para a esteira 1.
+// Parametro: j (alterado). Retorno: nenhum.
 void receberMateriaPrima(Jogo& j) {
-    colocarNaEsteira(j.esteira1, criarProduto(ID_CHAPA, "Chapa"));
-}
+    for (int i = 0; i < 2; i++) {
+        if (removerEstoque(j.estoque, ID_CHAPA, 1))
+            colocarNaEsteira(j.esteira1, criarProduto(ID_CHAPA, "Chapa"));
+    }
+}   
 
 // Se a cortadora esta livre e ha 3 chapas, consome as 3 e comeca a produzir.
 // Parametro: j. Retorno: true se comecou.
@@ -186,4 +193,32 @@ void mostrarNecessidade(const Jogo& j, int idProduto, int qtd) {
     calcularMateriaPrima(j.receitas, idProduto, qtd, totais);
     std::cout << "  Precisa de: " << totais[ID_CHAPA] << " Chapas e "
               << totais[ID_PARAFUSO] << " Parafusos\n";
+}
+
+// Cria o estoque inicial (lista encadeada, R5). Parametro: j (alterado).
+void carregarEstoque(Jogo& j) {
+    iniciarLista(j.estoque);
+    adicionarEstoque(j.estoque, ID_CHAPA, 30);
+    adicionarEstoque(j.estoque, ID_PARAFUSO, 20);
+}
+
+// Se a montadora esta livre, ha 2 engrenagens na esteira 2 e 4 parafusos
+// no estoque, consome tudo e comeca a produzir.
+// Parametro: j (alterado). Retorno: true se comecou.
+bool alimentarMontadora(Jogo& j) {
+    if (j.montadora.ocupada || contarEsteira(j.esteira2) < 2) return false;
+    if (!removerEstoque(j.estoque, ID_PARAFUSO, 4)) return false;
+    Produto descartado = {0, ""};
+    for (int i = 0; i < 2; i++) retirarDaEsteira(j.esteira2, descartado);
+    j.montadora.ocupada = true;
+    j.montadora.progressoAtual = 0;
+    return true;
+}
+
+// Etapa da montadora: alimenta, trabalha e, se terminou,
+// guarda 1 Carrinho no estoque. Parametro: j (alterado).
+void etapaMontadora(Jogo& j) {
+    alimentarMontadora(j);
+    if (avancarMaquina(j.montadora))
+        adicionarEstoque(j.estoque, ID_CARRINHO, 1);
 }
