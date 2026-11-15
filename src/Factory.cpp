@@ -47,6 +47,8 @@ void iniciarJogo(Jogo& j) {
     j.historico = nullptr;
     j.turno = 1;
     j.turnoMaximo = 20;
+    j.receitas = nullptr;
+    carregarReceitas(j);
     criarPedidos(j);
 }
 
@@ -81,6 +83,7 @@ void liberarMemoria(Jogo& j) {
     liberarEsteira(j.esteira1);
     liberarEsteira(j.esteira2);
     liberarPilha(j.historico);
+    liberarArvore(j.receitas);
 }
 
 // Cria uma maquina ociosa.
@@ -115,10 +118,14 @@ void mostrarMaquina(const Maquina& m) {
         std::cout << "ociosa\n";
 }
 
-// Lista todos os pedidos (usa exibirPedido, da Pessoa C).
+// Lista os pedidos e, para os pendentes, a materia-prima necessaria.
 // Parametro: j (so leitura). Retorno: nenhum.
 void verPedidos(const Jogo& j) {
-    for (const Pedido& p : j.pedidos) exibirPedido(p);
+    for (const Pedido& p : j.pedidos) {
+        exibirPedido(p);
+        // TODO(C): trocar ID_CARRINHO por p.idProduto quando existir
+        if (!p.entregue) mostrarNecessidade(j, ID_CARRINHO, p.quantidade);
+    }
 }
 
 // Coloca 1 Chapa na esteira 1.
@@ -161,4 +168,22 @@ void etapaCortadora(Jogo& j) {
 // Parametro: j (alterado). Retorno: nenhum.
 void ordenarPedidos(Jogo& j) {
     ordenarPedidosPorPrazo(j.pedidos);
+}
+// Insere as receitas na BST (R8): Engrenagem = 3 Chapas;
+// Carrinho = 2 Engrenagens + 4 Parafusos. Parametro: j (alterado).
+void carregarReceitas(Jogo& j) {
+    Receita engrenagem = {ID_ENGRENAGEM, "Engrenagem", {{ID_CHAPA, 3}}, 1, 2};
+    Receita carrinho = {ID_CARRINHO, "Carrinho",
+                        {{ID_ENGRENAGEM, 2}, {ID_PARAFUSO, 4}}, 2, 3};
+    j.receitas = inserirReceita(j.receitas, engrenagem);
+    j.receitas = inserirReceita(j.receitas, carrinho);
+}
+
+// Mostra a materia-prima total de qtd unidades do produto (recursao da Pessoa B, R3).
+// Parametros: j (so leitura), idProduto, qtd. Retorno: nenhum.
+void mostrarNecessidade(const Jogo& j, int idProduto, int qtd) {
+    int totais[MAX_ID] = {0};
+    calcularMateriaPrima(j.receitas, idProduto, qtd, totais);
+    std::cout << "  Precisa de: " << totais[ID_CHAPA] << " Chapas e "
+              << totais[ID_PARAFUSO] << " Parafusos\n";
 }

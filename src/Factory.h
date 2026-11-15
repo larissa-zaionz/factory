@@ -6,6 +6,7 @@
 #include <vector>
 #include "Produto.h"
 #include "Ordenacao.h"
+#include "ArvoreProdutos.h"
 
 // Uma esteira = os dois ponteiros da fila agrupados numa struct.
 struct Esteira {
@@ -28,6 +29,7 @@ struct Jogo {
     Maquina montadora;
     std::vector<Pedido> pedidos;
     NoHistorico* historico;   // pilha de entregas (desfazer)
+    NoArvore* receitas;       // raiz da BST de receitas
     int turno;
     int turnoMaximo;
 };
@@ -64,5 +66,8 @@ void etapaCortadora(Jogo& j);
 // Ordenação
 void ordenarPedidos(Jogo& j);
 
+// Receitas
+void carregarReceitas(Jogo& j);
+void mostrarNecessidade(const Jogo& j, int idProduto, int qtd);
 
 #endif
