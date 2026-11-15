@@ -2,7 +2,7 @@
 #include "FilaProducao.h"
 
 // Adiciona um produto no final da fila.
-// Parâmetros: início, fim e produto.
+// Parâmetros: inicio e fim (referências aos nós da fila) e produto.
 // Retorno: nenhum.
 void enfileirar(NoFila*& inicio, NoFila*& fim, Produto produto) {
     NoFila* novo = new NoFila;
@@ -19,7 +19,7 @@ void enfileirar(NoFila*& inicio, NoFila*& fim, Produto produto) {
 }
 
 // Remove o primeiro produto da fila.
-// Parâmetros: início e fim.
+// Parâmetros: inicio e fim (referências aos nós da fila).
 // Retorno: nenhum.
 void desenfileirar(NoFila*& inicio, NoFila*& fim) {
     if (inicio == nullptr) {
@@ -37,8 +37,8 @@ void desenfileirar(NoFila*& inicio, NoFila*& fim) {
 }
 
 // Consulta o primeiro produto da fila.
-// Parâmetros: início e produto.
-// Retorno: true se encontrou um produto.
+// Parâmetros: inicio (início da fila) e produto (recebe o resultado).
+// Retorno: true se encontrou um produto, false se a fila estiver vazia.
 bool frenteFila(NoFila* inicio, Produto& produto) {
     if (inicio == nullptr) {
         return false;
@@ -49,14 +49,14 @@ bool frenteFila(NoFila* inicio, Produto& produto) {
 }
 
 // Verifica se a fila está vazia.
-// Parâmetro: início.
-// Retorno: true se vazia.
+// Parâmetro: inicio (início da fila).
+// Retorno: true se estiver vazia, false caso contrário.
 bool filaVazia(NoFila* inicio) {
     return inicio == nullptr;
 }
 
-// Libera toda a memória da fila.
-// Parâmetros: início e fim.
+// Libera toda a memória ocupada pela fila.
+// Parâmetros: inicio e fim (referências aos nós da fila).
 // Retorno: nenhum.
 void liberarFila(NoFila*& inicio, NoFila*& fim) {
     while (inicio != nullptr) {
