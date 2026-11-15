@@ -25,5 +25,7 @@ struct NoArvore {
 NoArvore* inserirReceita(NoArvore* raiz, const Receita& r);
 NoArvore* buscarReceita(NoArvore* raiz, int id);
 void mostrarInOrdem(const NoArvore* raiz);
+void liberarArvore(NoArvore*& raiz);
+void calcularMateriaPrima(NoArvore* raiz, int idItem, int qtd, int totais[]);
 
 #endif
