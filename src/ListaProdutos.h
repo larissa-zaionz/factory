@@ -15,5 +15,8 @@ struct Lista {
 void iniciarLista(Lista& l);
 void adicionarEstoque(Lista& l, int idItem, int qtd);
 bool removerEstoque(Lista& l, int idItem, int qtd);
+int quantidadeEstoque(const Lista& l, int idItem);
+void mostrarLista(const Lista& l);
+void liberarLista(Lista& l);
 
 #endif
