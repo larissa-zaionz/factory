@@ -5,6 +5,7 @@
 #include "PilhaHistorico.h"
 #include <vector>
 #include "Produto.h"
+#include "Ordenacao.h"
 
 // Uma esteira = os dois ponteiros da fila agrupados numa struct.
 struct Esteira {
@@ -59,5 +60,9 @@ void receberMateriaPrima(Jogo& j);
 bool alimentarCortadora(Jogo& j);
 bool avancarMaquina(Maquina& m);
 void etapaCortadora(Jogo& j);
+
+// Ordenação
+void ordenarPedidos(Jogo& j);
+
 
 #endif

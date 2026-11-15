@@ -94,6 +94,7 @@ Maquina criarMaquina(const std::string& nome, int tempo) {
 void criarPedidos(Jogo& j) {
     j.pedidos.push_back(criarPedido(1, "Carrinho", 3, 20));
     j.pedidos.push_back(criarPedido(2, "Carrinho", 1, 10));
+    ordenarPedidos(j);
 }
 
 // Conta quantos produtos ha na esteira, sem remover nada.
@@ -154,4 +155,10 @@ void etapaCortadora(Jogo& j) {
     alimentarCortadora(j);
     if (avancarMaquina(j.cortadora))
         colocarNaEsteira(j.esteira2, criarProduto(ID_ENGRENAGEM, "Engrenagem"));
+}
+
+// Ordena os pedidos por prazo (Insertion Sort da Pessoa C, R9).
+// Parametro: j (alterado). Retorno: nenhum.
+void ordenarPedidos(Jogo& j) {
+    ordenarPedidosPorPrazo(j.pedidos);
 }
