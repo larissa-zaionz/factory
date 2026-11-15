@@ -13,5 +13,6 @@ struct Lista {
 };
 
 void iniciarLista(Lista& l);
+void adicionarEstoque(Lista& l, int idItem, int qtd);
 
 #endif

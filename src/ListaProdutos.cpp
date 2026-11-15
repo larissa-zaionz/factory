@@ -10,8 +10,26 @@ static NoLista* buscarNo(const Lista& l, int idItem) {
     return nullptr;
 }
 
-// Inicializa a lista vazia. O parâmetro é a referência de uma Lista l.
+// Inicializa a lista vazia. 
+// Parâmetro: a referência de uma Lista l.
 void iniciarLista(Lista& l) {
     l.inicio = nullptr;
     l.tamanho = 0;
+}
+
+// Soma qtd ao item. Caso não exista, um nó novo é criado no inicio (new).
+// Parâmetro: uma Lista l, idItem, qtd.
+// Retorno: nenhum.
+void adicionarEstoque(Lista& l, int idItem, int qtd) {
+    NoLista* no = buscarNo(l, idItem);
+    if (no != nullptr) {
+        no->quantidade += qtd;
+        return;
+    }
+    NoLista* novo = new NoLista;
+    novo->idItem = idItem;
+    novo->quantidade = qtd;
+    novo->proximo = l.inicio; // o novo nó aponta para o antigo "primeiro"
+    l.inicio = novo; // a lista passa a começar no novo nó
+    l.tamanho++;
 }
