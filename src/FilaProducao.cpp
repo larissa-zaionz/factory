@@ -32,8 +32,9 @@ void desenfileirar(NoFila*& inicio, NoFila*& fim) {
     if (inicio == nullptr) {
         fim = nullptr;
     }
-
-    delete auxiliar;
+   
+   delete auxiliar;
+   auxiliar = nullptr;
 }
 
 // Consulta o primeiro produto da fila.

@@ -10,13 +10,13 @@ struct NoHistorico {
 };
 
 // Adiciona um produto no topo do histórico.
-void push(NoHistorico*& topo, Produto produto);
+void empilharHistorico(NoHistorico*& topo, Produto produto);
 
 // Consulta o produto do topo.
-bool peek(NoHistorico* topo, Produto& produto);
+bool consultarTopoHistorico(NoHistorico* topo, Produto& produto);
 
 // Remove o produto do topo.
-void pop(NoHistorico*& topo);
+void desempilharHistorico(NoHistorico*& topo);
 
 // Verifica se a pilha está vazia.
 bool pilhaVazia(NoHistorico* topo);

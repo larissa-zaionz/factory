@@ -4,7 +4,7 @@
 // Adiciona um produto no topo da pilha.
 // Parâmetros: topo (referência ao início da pilha) e produto.
 // Retorno: nenhum.
-void push(NoHistorico*& topo, Produto produto) {
+void empilharHistorico(NoHistorico*& topo, Produto produto) {
     NoHistorico* novo = new NoHistorico;
     novo->produto = produto;
     novo->proximo = topo;
@@ -14,7 +14,7 @@ void push(NoHistorico*& topo, Produto produto) {
 // Consulta o produto que está no topo da pilha.
 // Parâmetros: topo (início da pilha) e produto (recebe o resultado).
 // Retorno: true se encontrou um produto, false se a pilha estiver vazia.
-bool peek(NoHistorico* topo, Produto& produto) {
+bool consultarTopoHistorico(NoHistorico* topo, Produto& produto) {
     if (topo == nullptr) {
         return false;
     }
@@ -26,7 +26,7 @@ bool peek(NoHistorico* topo, Produto& produto) {
 // Remove o produto que está no topo da pilha.
 // Parâmetro: topo (referência ao início da pilha).
 // Retorno: nenhum.
-void pop(NoHistorico*& topo) {
+void desempilharHistorico(NoHistorico*& topo) {
     if (topo == nullptr) {
         return;
     }
@@ -34,6 +34,7 @@ void pop(NoHistorico*& topo) {
     NoHistorico* auxiliar = topo;
     topo = topo->proximo;
     delete auxiliar;
+    auxiliar = nullptr;
 }
 
 // Verifica se a pilha está vazia.
@@ -48,6 +49,6 @@ bool pilhaVazia(NoHistorico* topo) {
 // Retorno: nenhum.
 void liberarPilha(NoHistorico*& topo) {
     while (topo != nullptr) {
-        pop(topo);
+    desempilharHistorico(topo);
     }
 }
