@@ -2,8 +2,8 @@
 #include "Produto.h"
 
 /*
- * Objetivo: Cria e retorna um novo produto ou peca automotiva.
- * Parametros: id (codigo unico), nome (nome da peca ou modelo do carro).
+ * Objetivo: Cria e retorna um novo produto ou peca .
+ * Parametros: id (codigo unico), nome (nome da peca ou modelo do brinquedo).
  * Retorno: Struct Produto preenchida.
  */
 Produto criarProduto(int id, const std::string& nome) {
@@ -11,8 +11,8 @@ Produto criarProduto(int id, const std::string& nome) {
 }
 
 /*
- * Objetivo: Cria e retorna um novo pedido de veiculos pendente.
- * Parametros: id (codigo), produto (modelo do carro), qtd (quantidade), prazo (turno limite).
+ * Objetivo: Cria e retorna um novo pedido de brinquedo pendente.
+ * Parametros: id (codigo), produto (modelo do brinquedo), qtd (quantidade), prazo (turno limite).
  * Retorno: Struct Pedido preenchida.
  */
 Pedido criarPedido(int id, const std::string& produto, int qtd, int prazo) {
