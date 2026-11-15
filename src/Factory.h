@@ -1,9 +1,20 @@
-#include "Produto.h"
+#ifndef FACTORY_H
+#define FACTORY_H
+
+#include "FilaProducao.h"
 #include "PilhaHistorico.h"
+#include <vector>
+#include "Produto.h"
 
-const int MAX_PEDIDOS = 10;
+// Uma esteira = os dois ponteiros da fila agrupados numa struct.
+struct Esteira {
+    NoFila* inicio;
+    NoFila* fim;
+};
 
-// IDs provisorios; trocar pelos da Pessoa C/B se eles definirem outros.
+const int MAX_ID = 12;   // tamanho de vetores indexados por ID (maior ID = 11)
+
+// IDs provisorios;
 const int ID_CHAPA      = 10;
 const int ID_PARAFUSO   = 11;
 const int ID_ENGRENAGEM = 1;
@@ -14,10 +25,28 @@ struct Jogo {
     Esteira esteira2;
     Maquina cortadora;
     Maquina montadora;
-    Pedido pedidos[MAX_PEDIDOS];
-    int numPedidos;
+    std::vector<Pedido> pedidos;
     NoHistorico* historico;   // pilha de entregas (desfazer)
     int turno;
     int turnoMaximo;
-    // TODO(B): Lista estoque;  NoArvore* receitas;
 };
+
+// Esteira
+void iniciarEsteira(Esteira& e);
+void colocarNaEsteira(Esteira& e, Produto p);
+bool retirarDaEsteira(Esteira& e, Produto& p);
+void mostrarEsteira(const Esteira& e);
+void liberarEsteira(Esteira& e);
+
+// Jogo
+void iniciarJogo(Jogo& j);
+void mostrarTela(const Jogo& j);
+void avancarTurno(Jogo& j);
+bool jogoTerminou(const Jogo& j);
+void liberarMemoria(Jogo& j);
+
+// Maquinas e pedidos
+Maquina criarMaquina(const std::string& nome, int tempo);
+void criarPedidos(Jogo& j);
+
+#endif

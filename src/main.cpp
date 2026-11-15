@@ -1,18 +1,19 @@
 #include <iostream>
 #include "Menu.h"
+#include "Factory.h"
 
 using namespace std;
 
 /**
  * Executa a acao da opcao escolhida no menu.
- * Parametros: opcao - valor ja validado; rodando - referencia ao
- *             controle do loop (vira false quando o jogador sai).
+ * Parametros: opcao - valor ja validado; jogo - estado do jogo (alterado);
+ *             rodando - controle do loop (vira false quando o jogador sai).
  * Retorno: nenhum.
  */
-void tratarOpcao(int opcao, bool& rodando) {
+void tratarOpcao(int opcao, Jogo& jogo, bool& rodando) {
     switch (opcao) {
         case OPC_AVANCAR_TURNO:
-            cout << "[TODO] avancar turno\n";
+            avancarTurno(jogo);
             break;
         case OPC_VER_PEDIDOS:
             cout << "[TODO] ver pedidos\n";
@@ -33,18 +34,25 @@ void tratarOpcao(int opcao, bool& rodando) {
 }
 
 /**
- * Ponto de entrada: repete "mostrar menu -> ler opcao -> agir"
- * ate o jogador escolher sair.
+ * Ponto de entrada: repete "mostrar tela -> menu -> agir -> checar fim"
+ * ate o jogador sair ou o prazo acabar.
  * Retorno: 0 se terminou normalmente.
  */
 int main() {
+    Jogo jogo;
+    iniciarJogo(jogo);
     bool rodando = true;
 
     while (rodando) {
+        mostrarTela(jogo);
         mostrarMenu();
-        tratarOpcao(lerOpcao(), rodando);
+        tratarOpcao(lerOpcao(), jogo, rodando);
+        if (jogoTerminou(jogo)) {
+            cout << "\nFim de jogo!\n";
+            rodando = false;
+        }
     }
 
-    cout << "Ate a proxima!\n";
+    liberarMemoria(jogo);
     return 0;
 }
