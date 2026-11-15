@@ -5,17 +5,17 @@
 #include "Produto.h"
 
 struct NoHistorico {
-    Produto produto;
+    Pedido pedido;
     NoHistorico* proximo;
 };
 
-// Adiciona um produto no topo do histórico.
-void empilharHistorico(NoHistorico*& topo, Produto produto);
+// Adiciona um pedido ao topo do histórico.
+void empilharHistorico(NoHistorico*& topo, Pedido pedido);
 
-// Consulta o produto do topo.
-bool consultarTopoHistorico(NoHistorico* topo, Produto& produto);
+// Consulta o pedido que está no topo.
+bool consultarTopoHistorico(NoHistorico* topo, Pedido& pedido);
 
-// Remove o produto do topo.
+// Remove o pedido do topo.
 void desempilharHistorico(NoHistorico*& topo);
 
 // Verifica se a pilha está vazia.

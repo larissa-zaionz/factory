@@ -1,30 +1,30 @@
 
 #include "PilhaHistorico.h"
 
-// Adiciona um produto no topo da pilha.
-// Parâmetros: topo (referência ao início da pilha) e produto.
+// Adiciona um pedido ao topo da pilha.
+// Parâmetros: topo (referência à pilha) e pedido.
 // Retorno: nenhum.
-void empilharHistorico(NoHistorico*& topo, Produto produto) {
+void empilharHistorico(NoHistorico*& topo, Pedido pedido) {
     NoHistorico* novo = new NoHistorico;
-    novo->produto = produto;
+    novo->pedido = pedido;
     novo->proximo = topo;
     topo = novo;
 }
 
-// Consulta o produto que está no topo da pilha.
-// Parâmetros: topo (início da pilha) e produto (recebe o resultado).
-// Retorno: true se encontrou um produto, false se a pilha estiver vazia.
-bool consultarTopoHistorico(NoHistorico* topo, Produto& produto) {
+// Consulta o pedido do topo.
+// Parâmetros: topo (início da pilha) e pedido (recebe o resultado).
+// Retorno: true se encontrou, false se estiver vazia.
+bool consultarTopoHistorico(NoHistorico* topo, Pedido& pedido) {
     if (topo == nullptr) {
         return false;
     }
 
-    produto = topo->produto;
+    pedido = topo->pedido;
     return true;
 }
 
-// Remove o produto que está no topo da pilha.
-// Parâmetro: topo (referência ao início da pilha).
+// Remove o pedido do topo.
+// Parâmetro: topo (referência à pilha).
 // Retorno: nenhum.
 void desempilharHistorico(NoHistorico*& topo) {
     if (topo == nullptr) {
@@ -39,16 +39,16 @@ void desempilharHistorico(NoHistorico*& topo) {
 
 // Verifica se a pilha está vazia.
 // Parâmetro: topo (início da pilha).
-// Retorno: true se estiver vazia, false caso contrário.
+// Retorno: true se vazia, false caso contrário.
 bool pilhaVazia(NoHistorico* topo) {
     return topo == nullptr;
 }
 
 // Libera todos os nós da pilha.
-// Parâmetro: topo (referência ao início da pilha).
+// Parâmetro: topo (referência à pilha).
 // Retorno: nenhum.
 void liberarPilha(NoHistorico*& topo) {
     while (topo != nullptr) {
-    desempilharHistorico(topo);
+        desempilharHistorico(topo);
     }
 }
