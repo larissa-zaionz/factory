@@ -56,8 +56,10 @@ void mostrarTela(const Jogo& j) {
     std::cout << "\n=== TURNO " << j.turno << " / " << j.turnoMaximo << " ===\n";
     std::cout << "Esteira 1: ";
     mostrarEsteira(j.esteira1);
+    mostrarMaquina(j.cortadora);
     std::cout << "Esteira 2: ";
     mostrarEsteira(j.esteira2);
+    mostrarMaquina(j.montadora);
 }
 
 // Executa um turno. Por enquanto so avanca o contador.
@@ -90,4 +92,28 @@ Maquina criarMaquina(const std::string& nome, int tempo) {
 void criarPedidos(Jogo& j) {
     j.pedidos.push_back(criarPedido(1, "Carrinho", 3, 20));
     j.pedidos.push_back(criarPedido(2, "Carrinho", 1, 10));
+}
+
+// Conta quantos produtos ha na esteira, sem remover nada.
+// Parametro: e (so leitura). Retorno: quantidade.
+int contarEsteira(const Esteira& e) {
+    int total = 0;
+    for (NoFila* a = e.inicio; a != nullptr; a = a->proximo) total++;
+    return total;
+}
+
+// Mostra o estado de uma maquina (ociosa ou com progresso).
+// Parametro: m (so leitura). Retorno: nenhum.
+void mostrarMaquina(const Maquina& m) {
+    std::cout << m.nome << ": ";
+    if (m.ocupada)
+        std::cout << "produzindo (" << m.progressoAtual << "/" << m.tempoNecessario << ")\n";
+    else
+        std::cout << "ociosa\n";
+}
+
+// Lista todos os pedidos (usa exibirPedido, da Pessoa C).
+// Parametro: j (so leitura). Retorno: nenhum.
+void verPedidos(const Jogo& j) {
+    for (const Pedido& p : j.pedidos) exibirPedido(p);
 }

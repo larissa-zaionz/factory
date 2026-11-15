@@ -16,7 +16,7 @@ void tratarOpcao(int opcao, Jogo& jogo, bool& rodando) {
             avancarTurno(jogo);
             break;
         case OPC_VER_PEDIDOS:
-            cout << "[TODO] ver pedidos\n";
+            verPedidos(jogo);
             break;
         case OPC_BUSCAR_PRODUTO:
             cout << "[TODO] buscar produto\n";

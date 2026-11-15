@@ -49,4 +49,9 @@ void liberarMemoria(Jogo& j);
 Maquina criarMaquina(const std::string& nome, int tempo);
 void criarPedidos(Jogo& j);
 
+// Exibicao
+int contarEsteira(const Esteira& e);
+void mostrarMaquina(const Maquina& m);
+void verPedidos(const Jogo& j);
+
 #endif
