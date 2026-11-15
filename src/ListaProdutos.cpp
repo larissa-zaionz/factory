@@ -33,3 +33,25 @@ void adicionarEstoque(Lista& l, int idItem, int qtd) {
     l.inicio = novo; // a lista passa a começar no novo nó
     l.tamanho++;
 }
+
+// Tira qtd do item. Se zerar, remove o nó (delete).
+// Parâmetro: uma Lista l, idItem, qtd.
+// Retorno: false se o item não existe ou não tem quantidade suficiente.
+bool removerEstoque(Lista& l, int idItem, int qtd) {
+    NoLista* anterior = nullptr;
+    NoLista* atual = l.inicio;
+    while (atual != nullptr && atual->idItem != idItem) {
+        anterior = atual;
+        atual = atual->proximo;
+    }
+    if (atual == nullptr || atual->quantidade < qtd) return false;
+    atual->quantidade -= qtd;
+    if (atual->quantidade == 0) {
+        if (anterior == nullptr) l.inicio = atual->proximo;
+        else anterior->proximo = atual->proximo;
+        delete atual;
+        atual = nullptr;
+        l.tamanho--;
+    }
+    return true;
+}
