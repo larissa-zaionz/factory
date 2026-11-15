@@ -23,5 +23,7 @@ struct NoArvore {
 };
 
 NoArvore* inserirReceita(NoArvore* raiz, const Receita& r);
+NoArvore* buscarReceita(NoArvore* raiz, int id);
+void mostrarInOrdem(const NoArvore* raiz);
 
 #endif
