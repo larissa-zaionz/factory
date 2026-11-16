@@ -1,3 +1,5 @@
+// João G. ===============================================================
+
 #include "Factory.h"
 #include <iostream>
 #include "Menu.h"
@@ -61,7 +63,7 @@ void mostrarTela(const Jogo& j) {
     std::cout << "Esteira 1: ";
     mostrarEsteira(j.esteira1);
     mostrarMaquina(j.cortadora);
-    std::cout << "Esteira 2: ";
+    std::cout << " Esteira2: ";
     mostrarEsteira(j.esteira2);
     mostrarMaquina(j.montadora);
     mostrarParafusos(j);
@@ -92,6 +94,8 @@ void liberarMemoria(Jogo& j) {
     liberarArvore(j.receitas);
     liberarLista(j.estoque);
 }
+
+// Larissa Z. ====================================================================
 
 // Cria uma maquina ociosa.
 // Parametros: nome e tempo (turnos para produzir). Retorno: Maquina.
@@ -179,6 +183,9 @@ void etapaCortadora(Jogo& j) {
 void ordenarPedidos(Jogo& j) {
     ordenarPedidosPorPrazo(j.pedidos);
 }
+
+// Jota ====================================================================
+
 // Insere as receitas na BST (R8): Engrenagem = 3 Chapas;
 // Carrinho = 2 Engrenagens + 4 Parafusos. Parametro: j (alterado).
 void carregarReceitas(Jogo& j) {
@@ -298,6 +305,8 @@ std::vector<Produto> montarCatalogo(const Jogo& j) {
     catalogo.push_back(criarProduto(ID_PARAFUSO, "Parafuso"));
     return catalogo;
 }
+
+// Lucas K. ========================================================================
 
 // Opcao do menu: busca um produto por nome (sequencial) e depois por ID
 // (binaria), mostrando quantas comparacoes cada busca fez (R10).
