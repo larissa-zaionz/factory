@@ -6,7 +6,7 @@ Simulador de linha de produção industrial desenvolvido em **C++17** via termin
 
 ## Funcionalidades do Sistema
 
-* **Linha de Produção (Fila - FIFO):** Processamento sequencial das peças na esteira (`Chapa`, `Parafuso`, `Engrenagem`, `Carrinho`).
+* **Linha de Produção (Fila - FIFO):** Processamento sequencial das peças na esteira (`Chapa`, `Engrenagem`, `Carrinho`).
 * **Histórico de Entregas (Pilha - LIFO):** Registro das últimas entregas concluídas com opção de desfazer a ação mais recente.
 * **Estoque e Receitas (Lista e Árvore):** Gerenciamento de itens em estoque e consulta hierárquica dos componentes necessários para montar cada carrinho.
 * **Priorização de Pedidos (Insertion Sort):** Ordenação automática das encomendas por prazo de entrega (`prazoTurno`) crescente.
