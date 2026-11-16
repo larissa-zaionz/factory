@@ -17,7 +17,7 @@ struct Esteira {
 
 const int MAX_ID = 12;   // tamanho de vetores indexados por ID (maior ID = 11)
 
-// IDs provisorios;
+// IDs;
 const int ID_CHAPA      = 10;
 const int ID_PARAFUSO   = 11;
 const int ID_ENGRENAGEM = 1;
@@ -92,5 +92,8 @@ void acaoBuscar(const Jogo& j);
 // Fim do jogo
 bool todosEntregues(const Jogo& j);
 void mostrarResultado(const Jogo& j);
+
+std::string nomeDoItem(int idItem);
+void mostrarEstoque(const Jogo& j);
 
 #endif

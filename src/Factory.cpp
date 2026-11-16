@@ -64,8 +64,7 @@ void mostrarTela(const Jogo& j) {
     std::cout << "Esteira 2: ";
     mostrarEsteira(j.esteira2);
     mostrarMaquina(j.montadora);
-    std::cout << "Estoque:\n";
-    mostrarLista(j.estoque);
+    mostrarEstoque(j);
 }
 
 // Executa um turno: entra material, cortadora, avanca o relogio.
@@ -333,4 +332,25 @@ bool todosEntregues(const Jogo& j) {
 void mostrarResultado(const Jogo& j) {
     if (todosEntregues(j)) std::cout << "VITORIA: todos os pedidos entregues!\n";
     else std::cout << "DERROTA: o prazo acabou com pedidos pendentes.\n";
+}
+
+// Traduz o ID de um item para o nome mostrado na tela.
+// Parametro: idItem. Retorno: o nome, ou "Item N" se o ID for desconhecido.
+std::string nomeDoItem(int idItem) {
+    if (idItem == ID_CHAPA)      return "Chapa";
+    if (idItem == ID_PARAFUSO)   return "Parafuso";
+    if (idItem == ID_ENGRENAGEM) return "Engrenagem";
+    if (idItem == ID_CARRINHO)   return "Carrinho";
+    return "Item " + std::to_string(idItem);
+}
+
+// Mostra o estoque com nomes, percorrendo a lista da B (travessia, R5).
+// Parametro: j (so leitura). Retorno: nenhum.
+void mostrarEstoque(const Jogo& j) {
+    std::cout << "Estoque: ";
+    if (j.estoque.inicio == nullptr) std::cout << "(vazio)";
+    for (const NoLista* n = j.estoque.inicio; n != nullptr; n = n->proximo) {
+        std::cout << nomeDoItem(n->idItem) << ": " << n->quantidade << "  ";
+    }
+    std::cout << "\n";
 }

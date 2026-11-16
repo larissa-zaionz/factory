@@ -1,4 +1,5 @@
 factory_asan
 factory_asan.exe
 factory
+factory.exe
 *.o
