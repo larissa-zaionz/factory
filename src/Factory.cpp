@@ -64,8 +64,8 @@ void mostrarTela(const Jogo& j) {
     std::cout << "Esteira 2: ";
     mostrarEsteira(j.esteira2);
     mostrarMaquina(j.montadora);
-    std::cout << "Estoque:\n";
-    mostrarLista(j.estoque);
+    mostrarParafusos(j);
+    mostrarEstoque(j);
 }
 
 // Executa um turno: entra material, cortadora, avanca o relogio.
@@ -81,8 +81,7 @@ void avancarTurno(Jogo& j) {
 // Parametro: j (so leitura).
 // Retorno: true se todos os pedidos foram entregues ou o prazo acabou.
 bool jogoTerminou(const Jogo& j) {
-    // Dois motivos para encerrar: vitoria antecipada ou estouro de prazo.
-    return todosEntregues(j) || j.turno > j.turnoMaximo;
+    return todosResolvidos(j) || j.turno > j.turnoMaximo;
 }
 
 // Libera tudo que foi alocado (fecha o R4). Parametro: j (alterado).
@@ -126,24 +125,24 @@ void mostrarMaquina(const Maquina& m) {
         std::cout << "ociosa\n";
 }
 
-// Lista os pedidos e, para os pendentes, a materia-prima necessaria.
+// Lista os pedidos; marca os vencidos e mostra a materia-prima dos pendentes.
 // Parametro: j (so leitura). Retorno: nenhum.
 void verPedidos(const Jogo& j) {
     for (const Pedido& p : j.pedidos) {
         exibirPedido(p);
-        // TODO(C): trocar ID_CARRINHO por p.idProduto quando existir
-        if (!p.entregue) mostrarNecessidade(j, ID_CARRINHO, p.quantidade);
+        if (pedidoVencido(j, p)) std::cout << "  >> VENCIDO (prazo encerrado)\n";
+        else if (!p.entregue) mostrarNecessidade(j, ID_CARRINHO, p.quantidade);
     }
 }
 
-// Move ate 2 Chapas do estoque para a esteira 1.
-// Parametro: j (alterado). Retorno: nenhum.
+// Move ate 2 Chapas do estoque para a esteira 1, parando se ela encher.
+// Chapa que nao cabe continua no estoque. Parametro: j (alterado).
 void receberMateriaPrima(Jogo& j) {
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < 2 && !esteiraCheia(j.esteira1); i++) {
         if (removerEstoque(j.estoque, ID_CHAPA, 1))
             colocarNaEsteira(j.esteira1, criarProduto(ID_CHAPA, "Chapa"));
     }
-}   
+}
 
 // Se a cortadora esta livre e ha 3 chapas, consome as 3 e comeca a produzir.
 // Parametro: j. Retorno: true se comecou.
@@ -240,7 +239,7 @@ Pedido* buscarPedido(Jogo& j, int idPedido) {
 // Retorno: false se o pedido nao existe, ja foi entregue ou falta produto.
 bool entregarPedido(Jogo& j, int idPedido) {
     Pedido* p = buscarPedido(j, idPedido);
-    if (p == nullptr || p->entregue) return false;
+    if (p == nullptr || p->entregue || pedidoVencido(j, *p)) return false;
     if (!removerEstoque(j.estoque, ID_CARRINHO, p->quantidade)) return false;
     p->entregue = true;
     push(j.historico, criarProduto(p->id, p->produto));
@@ -268,7 +267,9 @@ void acaoEntregar(Jogo& j) {
     std::cout << "Numero do pedido (0 cancela): ";
     int id = lerOpcao(0, static_cast<int>(j.pedidos.size()));
     if (id == 0) return;
-    if (entregarPedido(j, id)) std::cout << "Pedido entregue!\n";
+    if (entregarPedido(j, id)) { std::cout << "Pedido entregue!\n"; return; }
+    Pedido* p = buscarPedido(j, id);
+    if (p != nullptr && pedidoVencido(j, *p)) std::cout << "Pedido vencido: prazo encerrado.\n";
     else std::cout << "Nao foi possivel entregar (falta Carrinho no estoque?).\n";
 }
 
@@ -333,4 +334,57 @@ bool todosEntregues(const Jogo& j) {
 void mostrarResultado(const Jogo& j) {
     if (todosEntregues(j)) std::cout << "VITORIA: todos os pedidos entregues!\n";
     else std::cout << "DERROTA: o prazo acabou com pedidos pendentes.\n";
+}
+
+// Traduz o ID de um item para o nome mostrado na tela.
+// Parametro: idItem. Retorno: o nome, ou "Item N" se o ID for desconhecido.
+std::string nomeDoItem(int idItem) {
+    if (idItem == ID_CHAPA)      return "Chapa";
+    if (idItem == ID_PARAFUSO)   return "Parafuso";
+    if (idItem == ID_ENGRENAGEM) return "Engrenagem";
+    if (idItem == ID_CARRINHO)   return "Carrinho";
+    return "Item " + std::to_string(idItem);
+}
+
+// Mostra o estoque com nomes, percorrendo a lista da B (travessia, R5).
+// Parametro: j (so leitura). Retorno: nenhum.
+void mostrarEstoque(const Jogo& j) {
+    std::cout << "Estoque: ";
+    if (j.estoque.inicio == nullptr) std::cout << "(vazio)";
+    for (const NoLista* n = j.estoque.inicio; n != nullptr; n = n->proximo) {
+        std::cout << nomeDoItem(n->idItem) << ": " << n->quantidade << "  ";
+    }
+    std::cout << "\n";
+}
+
+// Mostra os parafusos que a montadora vai consumir (ate 4, no formato da
+// esteira) e o total em estoque. Usa quantidadeEstoque, da Pessoa B.
+// Parametro: j (so leitura). Retorno: nenhum.
+void mostrarParafusos(const Jogo& j) {
+    int total = quantidadeEstoque(j.estoque, ID_PARAFUSO);
+    int exibir = (total < 4) ? total : 4;
+    std::cout << "Parafusos (entrada lateral da Montadora): ";
+    for (int i = 0; i < exibir; i++) std::cout << "[Parafuso]";
+    if (exibir == 0) std::cout << "(vazio)";
+    std::cout << "\n";
+}
+
+// Diz se a esteira atingiu a capacidade maxima (usa contarEsteira).
+// Parametro: e (so leitura). Retorno: true se cheia.
+bool esteiraCheia(const Esteira& e) {
+    return contarEsteira(e) >= CAPACIDADE_ESTEIRA;
+}
+
+// Diz se o pedido passou do prazo sem ser entregue.
+// Parametros: j e p (so leitura). Retorno: true se vencido.
+bool pedidoVencido(const Jogo& j, const Pedido& p) {
+    return !p.entregue && j.turno > p.prazoTurno;
+}
+
+// Retorno: true se todo pedido foi entregue ou venceu (nada mais a fazer).
+bool todosResolvidos(const Jogo& j) {
+    for (const Pedido& p : j.pedidos) {
+        if (!p.entregue && !pedidoVencido(j, p)) return false;
+    }
+    return true;
 }
