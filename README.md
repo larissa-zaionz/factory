@@ -14,7 +14,6 @@ Simulador de linha de produção industrial desenvolvido em **C++17** via termin
 
 ---
 
-##  Arquitetura do Projeto
 
 ## Arquitetura do Projeto
 
