@@ -136,14 +136,14 @@ void verPedidos(const Jogo& j) {
     }
 }
 
-// Move ate 2 Chapas do estoque para a esteira 1.
-// Parametro: j (alterado). Retorno: nenhum.
+// Move ate 2 Chapas do estoque para a esteira 1, parando se ela encher.
+// Chapa que nao cabe continua no estoque. Parametro: j (alterado).
 void receberMateriaPrima(Jogo& j) {
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < 2 && !esteiraCheia(j.esteira1); i++) {
         if (removerEstoque(j.estoque, ID_CHAPA, 1))
             colocarNaEsteira(j.esteira1, criarProduto(ID_CHAPA, "Chapa"));
     }
-}   
+}
 
 // Se a cortadora esta livre e ha 3 chapas, consome as 3 e comeca a produzir.
 // Parametro: j. Retorno: true se comecou.
@@ -365,5 +365,11 @@ void mostrarParafusos(const Jogo& j) {
     std::cout << "Parafusos (entrada lateral da Montadora): ";
     for (int i = 0; i < exibir; i++) std::cout << "[Parafuso]";
     if (exibir == 0) std::cout << "(vazio)";
-    std::cout << "  estoque: " << total << "\n";
+    std::cout << "\n";
+}
+
+// Diz se a esteira atingiu a capacidade maxima (usa contarEsteira).
+// Parametro: e (so leitura). Retorno: true se cheia.
+bool esteiraCheia(const Esteira& e) {
+    return contarEsteira(e) >= CAPACIDADE_ESTEIRA;
 }

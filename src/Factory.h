@@ -22,6 +22,7 @@ const int ID_CHAPA      = 10;
 const int ID_PARAFUSO   = 11;
 const int ID_ENGRENAGEM = 1;
 const int ID_CARRINHO   = 2;
+const int CAPACIDADE_ESTEIRA = 4;   // maximo de pecas na esteira 1
 
 struct Jogo {
     Esteira esteira1;
@@ -96,5 +97,6 @@ void mostrarResultado(const Jogo& j);
 std::string nomeDoItem(int idItem);
 void mostrarEstoque(const Jogo& j);
 void mostrarParafusos(const Jogo& j);
+bool esteiraCheia(const Esteira& e);
 
 #endif
