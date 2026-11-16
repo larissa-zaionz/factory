@@ -49,6 +49,7 @@ int main() {
         tratarOpcao(lerOpcao(), jogo, rodando);
         if (jogoTerminou(jogo)) {
             cout << "\nFim de jogo!\n";
+            mostrarResultado(jogo);
             rodando = false;
         }
     }

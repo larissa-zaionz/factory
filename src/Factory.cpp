@@ -77,9 +77,12 @@ void avancarTurno(Jogo& j) {
     j.turno++;
 }
 
-// Retorno: true quando o prazo de turnos acabou.
+// Verifica se a partida acabou.
+// Parametro: j (so leitura).
+// Retorno: true se todos os pedidos foram entregues ou o prazo acabou.
 bool jogoTerminou(const Jogo& j) {
-    return j.turno > j.turnoMaximo;
+    // Dois motivos para encerrar: vitoria antecipada ou estouro de prazo.
+    return todosEntregues(j) || j.turno > j.turnoMaximo;
 }
 
 // Libera tudo que foi alocado (fecha o R4). Parametro: j (alterado).
@@ -311,4 +314,23 @@ void acaoBuscar(const Jogo& j) {
     }
     ResultadoBusca bin = buscarPorIdBinaria(catalogo, catalogo[seq.indice].id);
     std::cout << "Binaria:    " << bin.comparacoes << " comparacoes\n";
+}
+
+// Verifica se todos os pedidos ja foram entregues.
+// Parametro: j (so leitura). Retorno: true se nenhum pedido esta pendente.
+bool todosEntregues(const Jogo& j) {
+    // const Pedido&: le cada pedido sem copiar e sem poder alterar.
+    for (const Pedido& p : j.pedidos) {
+        // Basta um pendente para a resposta ser "nao".
+        if (!p.entregue) return false;
+    }
+    // Chegou ao fim sem achar pendente.
+    return true;
+}
+
+// Mostra vitoria ou derrota no fim da partida. Parametro: j (so leitura).
+// Retorno: nenhum.
+void mostrarResultado(const Jogo& j) {
+    if (todosEntregues(j)) std::cout << "VITORIA: todos os pedidos entregues!\n";
+    else std::cout << "DERROTA: o prazo acabou com pedidos pendentes.\n";
 }

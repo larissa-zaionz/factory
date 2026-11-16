@@ -89,4 +89,8 @@ void arvoreParaVetor(const NoArvore* raiz, std::vector<Produto>& v);
 std::vector<Produto> montarCatalogo(const Jogo& j);
 void acaoBuscar(const Jogo& j);
 
+// Fim do jogo
+bool todosEntregues(const Jogo& j);
+void mostrarResultado(const Jogo& j);
+
 #endif
