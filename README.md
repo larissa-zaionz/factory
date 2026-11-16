@@ -6,7 +6,7 @@ Simulador de linha de produção industrial desenvolvido em **C++17** via termin
 
 ## Funcionalidades do Sistema
 
-* **Linha de Produção (Fila - FIFO):** Processamento sequencial das peças na esteira (`Chapa`, `Engrenagem`, `Carrinho`).
+* **Linha de Produção (Fila - FIFO):** Processamento sequencial das peças na esteira (`Chapa`, `parafuso`,`Engrenagem`, `Carrinho`).
 * **Histórico de Entregas (Pilha - LIFO):** Registro das últimas entregas concluídas com opção de desfazer a ação mais recente.
 * **Estoque e Receitas (Lista e Árvore):** Gerenciamento de itens em estoque e consulta hierárquica dos componentes necessários para montar cada carrinho.
 * **Priorização de Pedidos (Insertion Sort):** Ordenação automática das encomendas por prazo de entrega (`prazoTurno`) crescente.
@@ -46,14 +46,13 @@ factory/
 **Lucas Kruppa** (Pessoa D): Motor do Jogo e Interface — Factory, Menu e main
 
 
+## Como Compilar e Executar
 
+O projeto conta com um `Makefile` multiplataforma (Linux, WSL e Windows/MinGW) e `.gitattributes` configurado para manter as quebras de linha em padrão `LF`.
 
-##  Como Compilar e Executar
+> **Nota para Windows puro:** caso utilize MinGW sem WSL, substitua `make` por `mingw32-make` nos comandos abaixo.
 
-make — Compila o projeto (gera factory no Linux ou factory.exe no Windows)
-
-make run — Compila e executa o simulador
-
-make asan — Executa com verificação de memória (Linux/WSL)
-
-make clean — Remove os executáveis compilados
+- `make` — Compila o projeto (gera `factory` no Linux/WSL ou `factory.exe` no Windows)
+- `make run` — Compila e executa o simulador
+- `make asan` — Executa com verificação de memória via AddressSanitizer (Linux/WSL)
+- `make clean` — Remove os executáveis compilados
