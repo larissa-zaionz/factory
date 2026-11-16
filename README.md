@@ -16,21 +16,24 @@ Simulador de linha de produção industrial desenvolvido em **C++17** via termin
 
 ##  Arquitetura do Projeto
 
+## Arquitetura do Projeto
+
+```text
 factory/
 ├── src/
-│   ├── main.cpp             # Ponto de entrada e loop principal
-│   ├── Menu.h / .cpp        # Interface de interação no terminal
-│   ├── Factory.h / .cpp     # Lógica central dos turnos e regras da fábrica
-│   ├── FilaProducao.h/.cpp  # Estrutura de Fila (esteira de produção)
-│   ├── PilhaHistorico.h/.cpp# Estrutura de Pilha (histórico / desfazer)
-│   ├── ListaProdutos.h/.cpp # Estrutura de Lista (controle de estoque)
-│   ├── ArvoreProdutos.h/.cpp# Estrutura de Árvore (receitas de montagem)
-│   ├── Produto.h / .cpp     # Structs base (Produto, Maquina, Pedido)
-│   ├── Ordenacao.h / .cpp   # Algoritmo Insertion Sort para pedidos
-│   └── Busca.h / .cpp       # Algoritmos de Busca Sequencial e Binária
-├── Makefile                 # Automação de build (Linux e Windows)
-└── README.md                # Documentação do projeto
-
+│   ├── main.cpp              # Ponto de entrada e loop principal
+│   ├── Menu.h / .cpp         # Interface de interação no terminal
+│   ├── Factory.h / .cpp      # Lógica central dos turnos e regras da fábrica
+│   ├── FilaProducao.h/.cpp   # Estrutura de Fila (esteira de produção)
+│   ├── PilhaHistorico.h/.cpp # Estrutura de Pilha (histórico / desfazer)
+│   ├── ListaProdutos.h/.cpp  # Estrutura de Lista (controle de estoque)
+│   ├── ArvoreProdutos.h/.cpp # Estrutura de Árvore (receitas de montagem)
+│   ├── Produto.h / .cpp      # Structs base (Produto, Maquina, Pedido)
+│   ├── Ordenacao.h / .cpp    # Algoritmo Insertion Sort para pedidos
+│   └── Busca.h / .cpp        # Algoritmos de Busca Sequencial e Binária
+├── Makefile                  # Automação de build (Linux e Windows)
+└── README.md                 # Documentação do projeto
+```
 ---
 
 ##  Equipe e Responsabilidades
