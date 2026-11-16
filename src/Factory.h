@@ -99,4 +99,7 @@ void mostrarEstoque(const Jogo& j);
 void mostrarParafusos(const Jogo& j);
 bool esteiraCheia(const Esteira& e);
 
+bool pedidoVencido(const Jogo& j, const Pedido& p);
+bool todosResolvidos(const Jogo& j);
+
 #endif

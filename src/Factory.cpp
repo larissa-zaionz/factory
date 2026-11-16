@@ -81,8 +81,7 @@ void avancarTurno(Jogo& j) {
 // Parametro: j (so leitura).
 // Retorno: true se todos os pedidos foram entregues ou o prazo acabou.
 bool jogoTerminou(const Jogo& j) {
-    // Dois motivos para encerrar: vitoria antecipada ou estouro de prazo.
-    return todosEntregues(j) || j.turno > j.turnoMaximo;
+    return todosResolvidos(j) || j.turno > j.turnoMaximo;
 }
 
 // Libera tudo que foi alocado (fecha o R4). Parametro: j (alterado).
@@ -126,13 +125,13 @@ void mostrarMaquina(const Maquina& m) {
         std::cout << "ociosa\n";
 }
 
-// Lista os pedidos e, para os pendentes, a materia-prima necessaria.
+// Lista os pedidos; marca os vencidos e mostra a materia-prima dos pendentes.
 // Parametro: j (so leitura). Retorno: nenhum.
 void verPedidos(const Jogo& j) {
     for (const Pedido& p : j.pedidos) {
         exibirPedido(p);
-        // TODO(C): trocar ID_CARRINHO por p.idProduto quando existir
-        if (!p.entregue) mostrarNecessidade(j, ID_CARRINHO, p.quantidade);
+        if (pedidoVencido(j, p)) std::cout << "  >> VENCIDO (prazo encerrado)\n";
+        else if (!p.entregue) mostrarNecessidade(j, ID_CARRINHO, p.quantidade);
     }
 }
 
@@ -240,7 +239,7 @@ Pedido* buscarPedido(Jogo& j, int idPedido) {
 // Retorno: false se o pedido nao existe, ja foi entregue ou falta produto.
 bool entregarPedido(Jogo& j, int idPedido) {
     Pedido* p = buscarPedido(j, idPedido);
-    if (p == nullptr || p->entregue) return false;
+    if (p == nullptr || p->entregue || pedidoVencido(j, *p)) return false;
     if (!removerEstoque(j.estoque, ID_CARRINHO, p->quantidade)) return false;
     p->entregue = true;
     push(j.historico, criarProduto(p->id, p->produto));
@@ -268,7 +267,9 @@ void acaoEntregar(Jogo& j) {
     std::cout << "Numero do pedido (0 cancela): ";
     int id = lerOpcao(0, static_cast<int>(j.pedidos.size()));
     if (id == 0) return;
-    if (entregarPedido(j, id)) std::cout << "Pedido entregue!\n";
+    if (entregarPedido(j, id)) { std::cout << "Pedido entregue!\n"; return; }
+    Pedido* p = buscarPedido(j, id);
+    if (p != nullptr && pedidoVencido(j, *p)) std::cout << "Pedido vencido: prazo encerrado.\n";
     else std::cout << "Nao foi possivel entregar (falta Carrinho no estoque?).\n";
 }
 
@@ -372,4 +373,18 @@ void mostrarParafusos(const Jogo& j) {
 // Parametro: e (so leitura). Retorno: true se cheia.
 bool esteiraCheia(const Esteira& e) {
     return contarEsteira(e) >= CAPACIDADE_ESTEIRA;
+}
+
+// Diz se o pedido passou do prazo sem ser entregue.
+// Parametros: j e p (so leitura). Retorno: true se vencido.
+bool pedidoVencido(const Jogo& j, const Pedido& p) {
+    return !p.entregue && j.turno > p.prazoTurno;
+}
+
+// Retorno: true se todo pedido foi entregue ou venceu (nada mais a fazer).
+bool todosResolvidos(const Jogo& j) {
+    for (const Pedido& p : j.pedidos) {
+        if (!p.entregue && !pedidoVencido(j, p)) return false;
+    }
+    return true;
 }
