@@ -1,5 +1,6 @@
 #include "Factory.h"
 #include <iostream>
+#include "Menu.h"
 
 // Deixa a esteira vazia. Parametro: e (alterada). Retorno: nenhum.
 void iniciarEsteira(Esteira& e) {
@@ -221,4 +222,55 @@ void etapaMontadora(Jogo& j) {
     alimentarMontadora(j);
     if (avancarMaquina(j.montadora))
         adicionarEstoque(j.estoque, ID_CARRINHO, 1);
+}
+
+// Procura um pedido pelo ID. Parametros: j e idPedido.
+// Retorno: ponteiro para o pedido, ou nullptr se nao existir.
+Pedido* buscarPedido(Jogo& j, int idPedido) {
+    for (Pedido& p : j.pedidos) {
+        if (p.id == idPedido) return &p;
+    }
+    return nullptr;
+}
+
+// Entrega um pedido inteiro: tira os Carrinhos do estoque e empilha no historico.
+// Retorno: false se o pedido nao existe, ja foi entregue ou falta produto.
+bool entregarPedido(Jogo& j, int idPedido) {
+    Pedido* p = buscarPedido(j, idPedido);
+    if (p == nullptr || p->entregue) return false;
+    if (!removerEstoque(j.estoque, ID_CARRINHO, p->quantidade)) return false;
+    p->entregue = true;
+    push(j.historico, criarProduto(p->id, p->produto));
+    return true;
+}
+
+// Desfaz a ultima entrega (LIFO, R6): devolve os Carrinhos ao estoque
+// e reabre o pedido. Retorno: false se nao ha nada para desfazer.
+bool desfazerEntrega(Jogo& j) {
+    Produto registro;
+    if (!peek(j.historico, registro)) return false;
+    Pedido* p = buscarPedido(j, registro.id);
+    if (p != nullptr) {
+        p->entregue = false;
+        adicionarEstoque(j.estoque, ID_CARRINHO, p->quantidade);
+    }
+    pop(j.historico);
+    return true;
+}
+
+// Opcao do menu: lista os pedidos e pergunta qual entregar (0 cancela).
+// Parametro: j (alterado). Retorno: nenhum.
+void acaoEntregar(Jogo& j) {
+    verPedidos(j);
+    std::cout << "Numero do pedido (0 cancela): ";
+    int id = lerOpcao(0, static_cast<int>(j.pedidos.size()));
+    if (id == 0) return;
+    if (entregarPedido(j, id)) std::cout << "Pedido entregue!\n";
+    else std::cout << "Nao foi possivel entregar (falta Carrinho no estoque?).\n";
+}
+
+// Opcao do menu: desfaz a ultima entrega. Parametro: j (alterado).
+void acaoDesfazer(Jogo& j) {
+    if (desfazerEntrega(j)) std::cout << "Ultima entrega desfeita.\n";
+    else std::cout << "Nada para desfazer.\n";
 }

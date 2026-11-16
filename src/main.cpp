@@ -22,10 +22,10 @@ void tratarOpcao(int opcao, Jogo& jogo, bool& rodando) {
             cout << "[TODO] buscar produto\n";
             break;
         case OPC_ENTREGAR_PEDIDO:
-            cout << "[TODO] entregar pedido\n";
+            acaoEntregar(jogo);
             break;
         case OPC_DESFAZER:
-            cout << "[TODO] desfazer\n";
+            acaoDesfazer(jogo);
             break;
         case OPC_SAIR:
             rodando = false;

@@ -76,4 +76,11 @@ void carregarEstoque(Jogo& j);
 bool alimentarMontadora(Jogo& j);
 void etapaMontadora(Jogo& j);
 
+// Entrega e desfazer
+Pedido* buscarPedido(Jogo& j, int idPedido);
+bool entregarPedido(Jogo& j, int idPedido);
+bool desfazerEntrega(Jogo& j);
+void acaoEntregar(Jogo& j);
+void acaoDesfazer(Jogo& j);
+
 #endif
