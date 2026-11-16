@@ -304,6 +304,8 @@ std::vector<Produto> montarCatalogo(const Jogo& j) {
 // Parametro: j (so leitura). Retorno: nenhum.
 void acaoBuscar(const Jogo& j) {
     std::vector<Produto> catalogo = montarCatalogo(j);
+    std::cout << "Catalogo de receitas (in-ordem por ID):\n";
+    mostrarInOrdem(j.receitas);
     std::string nome;
     std::cout << "Nome do produto (ex.: Carrinho): ";
     std::cin >> nome;
