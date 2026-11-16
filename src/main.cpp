@@ -19,7 +19,7 @@ void tratarOpcao(int opcao, Jogo& jogo, bool& rodando) {
             verPedidos(jogo);
             break;
         case OPC_BUSCAR_PRODUTO:
-            cout << "[TODO] buscar produto\n";
+            acaoBuscar(jogo);
             break;
         case OPC_ENTREGAR_PEDIDO:
             acaoEntregar(jogo);

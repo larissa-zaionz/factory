@@ -274,3 +274,41 @@ void acaoDesfazer(Jogo& j) {
     if (desfazerEntrega(j)) std::cout << "Ultima entrega desfeita.\n";
     else std::cout << "Nada para desfazer.\n";
 }
+
+// Copia a BST para um vetor em ordem crescente de ID (in-ordem, recursivo).
+// Parametros: raiz (so leitura) e v (recebe os produtos). Retorno: nenhum.
+void arvoreParaVetor(const NoArvore* raiz, std::vector<Produto>& v) {
+    if (raiz == nullptr) return;
+    arvoreParaVetor(raiz->esquerda, v);
+    v.push_back(criarProduto(raiz->receita.id, raiz->receita.nome));
+    arvoreParaVetor(raiz->direita, v);
+}
+
+// Monta o catalogo ordenado por ID: produtos da BST + materias-primas.
+// As materias-primas tem IDs maiores (10, 11), entao o vetor segue ordenado.
+// Parametro: j (so leitura). Retorno: vetor de produtos.
+std::vector<Produto> montarCatalogo(const Jogo& j) {
+    std::vector<Produto> catalogo;
+    arvoreParaVetor(j.receitas, catalogo);
+    catalogo.push_back(criarProduto(ID_CHAPA, "Chapa"));
+    catalogo.push_back(criarProduto(ID_PARAFUSO, "Parafuso"));
+    return catalogo;
+}
+
+// Opcao do menu: busca um produto por nome (sequencial) e depois por ID
+// (binaria), mostrando quantas comparacoes cada busca fez (R10).
+// Parametro: j (so leitura). Retorno: nenhum.
+void acaoBuscar(const Jogo& j) {
+    std::vector<Produto> catalogo = montarCatalogo(j);
+    std::string nome;
+    std::cout << "Nome do produto (ex.: Carrinho): ";
+    std::cin >> nome;
+    ResultadoBusca seq = buscarPorNomeSequencial(catalogo, nome);
+    std::cout << "Sequencial: " << seq.comparacoes << " comparacoes\n";
+    if (seq.indice < 0) {
+        std::cout << "Produto nao encontrado.\n";
+        return;
+    }
+    ResultadoBusca bin = buscarPorIdBinaria(catalogo, catalogo[seq.indice].id);
+    std::cout << "Binaria:    " << bin.comparacoes << " comparacoes\n";
+}
