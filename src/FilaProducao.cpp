@@ -34,6 +34,7 @@ void desenfileirar(NoFila*& inicio, NoFila*& fim) {
     }
 
     delete auxiliar;
+    auxiliar = nullptr;
 }
 
 // Consulta o primeiro produto da fila.
