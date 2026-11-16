@@ -28,6 +28,7 @@ void pop(NoHistorico*& topo) {
     NoHistorico* auxiliar = topo;
     topo = topo->proximo;
     delete auxiliar;
+    auxiliar = nullptr;
 }
 
 // Verifica se a pilha está vazia.
