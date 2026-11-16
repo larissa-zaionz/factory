@@ -64,6 +64,7 @@ void mostrarTela(const Jogo& j) {
     std::cout << "Esteira 2: ";
     mostrarEsteira(j.esteira2);
     mostrarMaquina(j.montadora);
+    mostrarParafusos(j);
     mostrarEstoque(j);
 }
 
@@ -353,4 +354,16 @@ void mostrarEstoque(const Jogo& j) {
         std::cout << nomeDoItem(n->idItem) << ": " << n->quantidade << "  ";
     }
     std::cout << "\n";
+}
+
+// Mostra os parafusos que a montadora vai consumir (ate 4, no formato da
+// esteira) e o total em estoque. Usa quantidadeEstoque, da Pessoa B.
+// Parametro: j (so leitura). Retorno: nenhum.
+void mostrarParafusos(const Jogo& j) {
+    int total = quantidadeEstoque(j.estoque, ID_PARAFUSO);
+    int exibir = (total < 4) ? total : 4;
+    std::cout << "Parafusos (entrada lateral da Montadora): ";
+    for (int i = 0; i < exibir; i++) std::cout << "[Parafuso]";
+    if (exibir == 0) std::cout << "(vazio)";
+    std::cout << "  estoque: " << total << "\n";
 }

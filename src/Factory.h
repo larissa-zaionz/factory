@@ -95,5 +95,6 @@ void mostrarResultado(const Jogo& j);
 
 std::string nomeDoItem(int idItem);
 void mostrarEstoque(const Jogo& j);
+void mostrarParafusos(const Jogo& j);
 
 #endif
